@@ -41,9 +41,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-/**
- * @author bednar@github.com
- */
 public class TestInfluxLineProtocolReader extends AbstractTestInfluxLineProtocolReader {
 
     @Test

@@ -27,9 +27,6 @@ import org.mockito.stubbing.Answer;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-/**
- * @author bednar@github.com
- */
 public class TestStandardInfluxDBService extends AbstractTestStandardInfluxDBService {
 
     private Answer answerConnect;

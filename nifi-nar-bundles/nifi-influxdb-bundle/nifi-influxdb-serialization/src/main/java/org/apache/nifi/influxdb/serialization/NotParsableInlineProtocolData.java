@@ -19,9 +19,6 @@ package org.apache.nifi.influxdb.serialization;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.apache.nifi.serialization.MalformedRecordException;
 
-/**
- * @author bednar@github.com
- */
 public class NotParsableInlineProtocolData extends MalformedRecordException {
 
     public NotParsableInlineProtocolData(@Nullable final String protocol, @Nullable final Throwable cause) {

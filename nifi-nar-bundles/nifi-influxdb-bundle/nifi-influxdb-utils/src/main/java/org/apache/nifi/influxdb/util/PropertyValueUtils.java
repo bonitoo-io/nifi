@@ -31,8 +31,6 @@ import java.util.Objects;
 
 /**
  * Helper method for operate with {@link PropertyValue}.
- *
- * @author bednar@github.com
  * @see PropertyValue
  * @see PropertyValue#getValue()
  */

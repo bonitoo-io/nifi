@@ -20,9 +20,6 @@ import org.apache.nifi.components.ValidationResult;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * @author bednar@github.com
- */
 public class TestInfluxLineProtocolReaderSettings extends AbstractTestInfluxLineProtocolReader {
 
     @Test

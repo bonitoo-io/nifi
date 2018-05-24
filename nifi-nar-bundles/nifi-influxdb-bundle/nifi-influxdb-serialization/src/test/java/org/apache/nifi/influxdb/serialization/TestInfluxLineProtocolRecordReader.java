@@ -49,9 +49,6 @@ import static org.apache.nifi.serialization.record.RecordFieldType.LONG;
 import static org.apache.nifi.serialization.record.RecordFieldType.MAP;
 import static org.apache.nifi.serialization.record.RecordFieldType.STRING;
 
-/**
- * @author bednar@github.com
- */
 public class TestInfluxLineProtocolRecordReader extends AbstractTestInfluxLineProtocolReader {
 
     @Test

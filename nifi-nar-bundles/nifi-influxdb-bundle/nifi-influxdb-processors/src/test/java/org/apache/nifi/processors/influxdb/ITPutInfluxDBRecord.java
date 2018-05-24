@@ -52,9 +52,6 @@ import static org.apache.nifi.schema.access.SchemaAccessUtils.SCHEMA_TEXT;
 import static org.apache.nifi.schema.access.SchemaAccessUtils.SCHEMA_TEXT_PROPERTY;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-/**
- * @author bednar@github.com
- */
 public class ITPutInfluxDBRecord extends AbstractITInfluxDB {
 
 

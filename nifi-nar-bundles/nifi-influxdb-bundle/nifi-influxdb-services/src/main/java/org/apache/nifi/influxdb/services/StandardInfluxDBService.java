@@ -48,9 +48,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.apache.nifi.influxdb.util.PropertyValueUtils.getEnumValue;
 
-/**
- * @author bednar@github.com
- */
 @Tags({"influxdb", "client"})
 @CapabilityDescription("The controller service that provides connection to InfluxDB.")
 public class StandardInfluxDBService extends AbstractControllerService implements InfluxDBService {

@@ -68,7 +68,8 @@ import static org.influxdb.BatchOptions.DEFAULT_JITTER_INTERVAL_DURATION;
 @InputRequirement(InputRequirement.Requirement.INPUT_REQUIRED)
 @SupportsBatching
 @Tags({"influxdb", "measurement", "insert", "write", "put", "record", "timeseries"})
-@CapabilityDescription("Processor to write the content of a FlowFile using configured record reader. ")
+@CapabilityDescription("PutInfluxDBRecord processor uses a specified RecordReader to write the content of a FlowFile " +
+        "into InfluxDB database.")
 @WritesAttributes({@WritesAttribute(
         attribute = AbstractInfluxDBProcessor.INFLUX_DB_ERROR_MESSAGE,
         description = "InfluxDB error message"),
@@ -141,7 +142,7 @@ public class PutInfluxDBRecord extends AbstractInfluxDBProcessor {
     private static final AllowableValue MISSING_ITEMS_BEHAVIOUR_IGNORE = new AllowableValue(
             MissingItemsBehaviour.IGNORE.name(),
             "Ignore",
-            "The item that is not present in the document is ignored.");
+            "The item that is not present in the document is silently ignored.");
 
     private static final AllowableValue MISSING_ITEMS_BEHAVIOUR_FAIL = new AllowableValue(
             MissingItemsBehaviour.FAIL.name(),
@@ -155,12 +156,12 @@ public class PutInfluxDBRecord extends AbstractInfluxDBProcessor {
     private static final AllowableValue NULL_VALUE_BEHAVIOUR_IGNORE = new AllowableValue(
             NullValueBehaviour.IGNORE.name(),
             "Ignore",
-            "The fields which does not have a value are ignored.");
+            "Silently skip fields with a null value.");
 
     private static final AllowableValue NULL_VALUE_BEHAVIOUR_FAIL = new AllowableValue(
             NullValueBehaviour.FAIL.name(),
             "Fail",
-            "The processing fail if fields does not have a value.");
+            "Fail when the field has a null value.");
 
     /**
      * Complex field behaviour
@@ -187,16 +188,16 @@ public class PutInfluxDBRecord extends AbstractInfluxDBProcessor {
 
 
     protected static final Relationship REL_SUCCESS = new Relationship.Builder().name("success")
-            .description("Successful FlowFiles that are saved to InfluxDB are routed to this relationship")
+            .description("All FlowFiles that are written into InlfuxDB are routed to this relationship")
             .build();
 
     protected static final Relationship REL_FAILURE = new Relationship.Builder().name("failure")
-            .description("FlowFiles were not saved to InfluxDB are routed to this relationship")
+            .description("All FlowFiles that cannot be written to InfluxDB are routed to this relationship")
             .build();
 
     protected static final Relationship REL_RETRY = new Relationship.Builder().name("retry")
-            .description("FlowFiles were not saved to InfluxDB due to retryable exception "
-                    + "are routed to this relationship")
+            .description("A FlowFile is routed to this relationship if the database cannot be updated but attempting "
+                    + "the operation again may succeed. ")
             .build();
 
     protected static final PropertyDescriptor RECORD_READER_FACTORY = new PropertyDescriptor.Builder()
@@ -260,8 +261,11 @@ public class PutInfluxDBRecord extends AbstractInfluxDBProcessor {
 
     public static final PropertyDescriptor ENABLE_BATCHING = new PropertyDescriptor.Builder()
             .name("influxdb-enable-batch")
-            .displayName("Enable batching")
-            .description("Enable batching of single Point writes to speed up writes significantly.")
+            .displayName("Enable InfluxDB batching")
+            .description("Enabled batching speed up writes significantly " +
+                    "but in the cost of loosing reliability. Flow file can be transfered to success releation " +
+                    "before the batch buffer is flushed into database. For additional information see " +
+                    "processor documentation.")
             .addValidator(StandardValidators.BOOLEAN_VALIDATOR)
             .allowableValues("false", "true")
             .defaultValue("false")

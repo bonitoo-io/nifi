@@ -42,9 +42,6 @@ import static org.apache.nifi.processors.influxdb.PutInfluxDBRecord.MEASUREMENT_
 import static org.apache.nifi.processors.influxdb.WriteOptions.MissingItemsBehaviour.FAIL;
 import static org.apache.nifi.processors.influxdb.WriteOptions.MissingItemsBehaviour.IGNORE;
 
-/**
- * @author bednar@github.com
- */
 @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class TestPutInfluxDBRecordErrorHandling extends AbstractTestPutInfluxDBRecord {
 

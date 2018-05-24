@@ -54,9 +54,6 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-/**
- * @author bednar@github.com
- */
 public final class RecordToPointMapper {
 
     private final ComponentLog log;

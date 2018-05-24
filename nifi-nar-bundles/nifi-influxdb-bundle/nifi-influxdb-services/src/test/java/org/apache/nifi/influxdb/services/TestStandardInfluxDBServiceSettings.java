@@ -28,9 +28,6 @@ import java.security.GeneralSecurityException;
 
 import static org.mockito.Mockito.when;
 
-/**
- * @author bednar@github.com
- */
 public class TestStandardInfluxDBServiceSettings extends AbstractTestStandardInfluxDBService {
 
     @Before

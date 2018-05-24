@@ -30,8 +30,6 @@ import java.util.stream.Stream;
 
 /**
  * The tests comes from https://github.com/influxdata/influxdb/blob/1.6/models/points_test.go.
- *
- * @author bednar@github.com
  */
 public class TestInfluxLineProtocolParser {
 

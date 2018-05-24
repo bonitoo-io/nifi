@@ -34,9 +34,6 @@ import static org.apache.nifi.ssl.StandardSSLContextService.TRUSTSTORE;
 import static org.apache.nifi.ssl.StandardSSLContextService.TRUSTSTORE_PASSWORD;
 import static org.apache.nifi.ssl.StandardSSLContextService.TRUSTSTORE_TYPE;
 
-/**
- * @author bednar@github.com
- */
 public class ITStandardInfluxDBServiceSSL extends AbstractTestStandardInfluxDBService {
 
     @Before

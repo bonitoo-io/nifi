@@ -29,7 +29,7 @@
 <h2>Description:</h2>
 
 <p>
-    Processor to write the content of a FlowFile using configured record reader.
+    PutInfluxDBRecord processor uses a specified RecordReader to write the content of a FlowFile into InfluxDB database.
 </p>
 
 <h3>Mapping Records to InfluxDB Data Point</h3>
@@ -43,14 +43,14 @@
 
 <h4>Tags</h4>
 <p>
-    The name of field in the Record Schema is used as key of the Tag. The value of the field is used as value of the
+    The name of the field in the Record Schema is used as the key of the Tag. The value of the field is used as the value of the
     Tag. Any data type is converted into a String type and used as the Tag value
     (see also <a href="#handling_complex">handling complex types</a>).
 </p>
 
 <h4>Fields</h4>
 <p>
-    The name of field in the Record Schema is used as key of the Tag. The value of the field is used as value of the
+    The name of the field in the Record Schema is used as the key of the Tag. The value of the field is used as the value of the
     Tag. The Record Field data type is converted into a <a
         href="https://docs.influxdata.com/influxdb/latest/write_protocols/line_protocol_tutorial/#data-types">supported
     InfluxDB types</a>:
@@ -83,10 +83,20 @@
     <li><strong>Array</strong> - based on property the <i>Complex Field Behavior</i></li>
     <li><strong>Record</strong> - based on property the <i>Complex Field Behavior</i></li>
 </ul>
-<h3>Batching</h3>
-<p>TODO</p>
 
-<h3>Examples</h3>
-<p>TODO</p>
+<h3 id="batching">Batching</h3>
+
+<p>
+    Enabled batching will reduce reliability in the cost of
+    better performance. The PutInfluxDBRecord processor uses batching/buffering implemented in influxdb-java client.
+    Processor can route flow file to the success relation before the batch buffer is flushed into the database. The
+    batch buffer is stored in the system memory, so in the case of power failure or process kill, is content of buffer
+    not written into InfluxDB.
+</p>
+<p>
+    Batching is useful when the flow file contains large number of records. Records are sent
+    into InfluxDB in batching points with preconfigured size.
+</p>
+
 </body>
 </html>

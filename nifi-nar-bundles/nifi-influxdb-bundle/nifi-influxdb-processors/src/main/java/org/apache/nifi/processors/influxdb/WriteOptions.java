@@ -24,9 +24,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author bednar@github.com
- */
 public final class WriteOptions implements Cloneable {
 
     public static final TimeUnit PRECISION_DEFAULT = TimeUnit.NANOSECONDS;

@@ -30,9 +30,6 @@ import java.util.Collections;
 import java.util.Map;
 
 
-/**
- * @author bednar@github.com
- */
 public abstract class AbstractTestInfluxLineProtocolReader {
 
     @Rule

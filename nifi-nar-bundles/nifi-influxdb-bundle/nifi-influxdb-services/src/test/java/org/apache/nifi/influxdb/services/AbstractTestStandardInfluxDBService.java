@@ -39,9 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * @author bednar@github.com
- */
 public abstract class AbstractTestStandardInfluxDBService {
 
     @Rule

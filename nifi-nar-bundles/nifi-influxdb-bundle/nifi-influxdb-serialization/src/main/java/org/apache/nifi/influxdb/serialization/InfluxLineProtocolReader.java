@@ -39,9 +39,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author bednar@github.com
- */
 @Tags({"influxdb", "measurement", "insert", "parse", "record", "reader", "record", "timeseries"})
 @CapabilityDescription("This Processor parses the InfluxDB Line Protocol data to a record. "
         + "This is useful for listening data from the Telegraf, InfluxDB or IoT. "

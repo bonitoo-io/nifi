@@ -33,8 +33,6 @@ import java.util.Objects;
 /**
  * Parse for <a href="https://docs.influxdata.com/influxdb/latest/write_protocols/line_protocol_tutorial/">
  * InfluxDB Line protocol</a>.
- *
- * @author bednar@github.com
  */
 public final class InfluxLineProtocolParser {
 

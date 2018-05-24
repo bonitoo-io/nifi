@@ -36,9 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author bednar@github.com
- */
 public class TestPutInfluxDBRecordSettings extends AbstractTestPutInfluxDBRecord {
 
     @Rule

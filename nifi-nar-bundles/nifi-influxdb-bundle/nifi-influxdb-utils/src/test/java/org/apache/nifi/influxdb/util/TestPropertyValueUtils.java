@@ -35,9 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author bednar@github.com
- */
 public class TestPropertyValueUtils {
     private static final PropertyDescriptor TEST_ENUM_PROPERTY = new PropertyDescriptor.Builder()
             .name("enum-value")

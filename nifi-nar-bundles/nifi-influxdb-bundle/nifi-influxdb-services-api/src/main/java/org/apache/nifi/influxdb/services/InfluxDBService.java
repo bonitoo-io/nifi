@@ -28,9 +28,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 /**
- * The controller service that provides connection to InfluxDB.
- *
- * @author bednar@github.com
+ * This controller service interface providing client connection to InfluxDB.
  */
 public interface InfluxDBService extends ControllerService {
 

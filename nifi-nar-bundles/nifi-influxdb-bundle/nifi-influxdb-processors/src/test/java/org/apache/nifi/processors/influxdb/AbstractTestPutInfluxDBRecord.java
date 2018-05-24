@@ -41,9 +41,6 @@ import org.mockito.stubbing.Answer;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-/**
- * @author bednar@github.com
- */
 public abstract class AbstractTestPutInfluxDBRecord {
 
     @Rule

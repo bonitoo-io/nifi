@@ -41,9 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * @author bednar@github.com
- */
 public class InfluxLineProtocolRecordReader implements RecordReader {
 
     protected static final String MEASUREMENT = "measurement";

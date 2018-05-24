@@ -23,9 +23,6 @@ import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-/**
- * @author bednar@github.com
- */
 public class ITStandardInfluxDBService extends AbstractTestStandardInfluxDBService {
 
     @Before
