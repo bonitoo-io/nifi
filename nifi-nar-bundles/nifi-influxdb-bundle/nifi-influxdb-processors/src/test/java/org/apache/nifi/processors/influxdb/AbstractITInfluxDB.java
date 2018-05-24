@@ -61,6 +61,8 @@ public class AbstractITInfluxDB {
             checkError(result);
             result = influxDB.query(new Query("DROP measurement chunkedQueryTest", dbName));
             checkError(result);
+            result = influxDB.query(new Query("DROP measurement testRecordMeasurement", dbName));
+            checkError(result);
             result = influxDB.query(new Query("DROP database " + dbName, dbName));
             Thread.sleep(1000);
         }
