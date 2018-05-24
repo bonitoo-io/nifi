@@ -30,6 +30,8 @@
         <module>nifi-influxdb-services-api</module>
         <module>nifi-influxdb-services</module>
         <module>nifi-influxdb-services-nar</module>
+        <module>nifi-influxdb-serialization</module>
+        <module>nifi-influxdb-serialization-nar</module>
         <module>nifi-influxdb-processors</module>
         <module>nifi-influxdb-nar</module>
     </modules>
@@ -39,6 +41,21 @@
             <dependency>
                 <groupId>org.apache.nifi</groupId>
                 <artifactId>nifi-influxdb-processors</artifactId>
+                <version>1.7.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-influxdb-services</artifactId>
+                <version>1.7.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-influxdb-serialization</artifactId>
+                <version>1.7.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.nifi</groupId>
+                <artifactId>nifi-influxdb-serialization</artifactId>
                 <version>1.7.0-SNAPSHOT</version>
             </dependency>
 			<dependency>
