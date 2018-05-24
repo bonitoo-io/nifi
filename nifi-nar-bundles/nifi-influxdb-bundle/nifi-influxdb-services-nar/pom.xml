@@ -18,40 +18,20 @@
 
     <parent>
         <groupId>org.apache.nifi</groupId>
-        <artifactId>nifi-nar-bundles</artifactId>
+        <artifactId>nifi-influxdb-bundle</artifactId>
         <version>1.7.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>nifi-influxdb-bundle</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>nifi-influxdb-services-nar</artifactId>
+    <packaging>nar</packaging>
 
-    <modules>
-        <module>nifi-influxdb-utils</module>
-        <module>nifi-influxdb-services-api</module>
-        <module>nifi-influxdb-services</module>
-        <module>nifi-influxdb-services-nar</module>
-        <module>nifi-influxdb-processors</module>
-        <module>nifi-influxdb-nar</module>
-    </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.nifi</groupId>
-                <artifactId>nifi-influxdb-processors</artifactId>
-                <version>1.7.0-SNAPSHOT</version>
-            </dependency>
-			<dependency>
-				<groupId>com.github.stephenc.findbugs</groupId>
-				<artifactId>findbugs-annotations</artifactId>
-				<version>1.3.9-1</version>
-			</dependency>
-            <dependency>
-                <groupId>org.influxdb</groupId>
-                <artifactId>influxdb-java</artifactId>
-                <version>2.10</version>
-            </dependency>
-		</dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-influxdb-services-api</artifactId>
+            <version>1.7.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 </project>
