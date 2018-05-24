@@ -72,7 +72,22 @@
             <artifactId>nifi-ssl-context-service</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes combine.children="append">
+                        <exclude>src/test/resources/ssl/influxdb-selfsigned.crt</exclude>
+                        <exclude>src/test/resources/ssl/influxdb-selfsigned.key</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

@@ -36,8 +36,7 @@ import java.util.Objects;
  * @see PropertyValue
  * @see PropertyValue#getValue()
  */
-public final class PropertyValueUtils
-{
+public final class PropertyValueUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(PropertyValueUtils.class);
 
