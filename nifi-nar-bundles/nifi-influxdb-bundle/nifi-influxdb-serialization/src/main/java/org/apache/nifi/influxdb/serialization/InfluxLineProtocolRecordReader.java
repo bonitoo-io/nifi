@@ -19,8 +19,6 @@ package org.apache.nifi.influxdb.serialization;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.nifi.influxdb.serialization.InfluxLineProtocolReader.NotParsableDataBehaviour;
-import org.apache.nifi.logging.ComponentLog;
 import org.apache.nifi.record.listen.IOUtils;
 import org.apache.nifi.serialization.MalformedRecordException;
 import org.apache.nifi.serialization.RecordReader;
@@ -54,23 +52,15 @@ public class InfluxLineProtocolRecordReader implements RecordReader {
     protected static final String TIMESTAMP = "timestamp";
 
     private final BufferedReader reader;
-    private final NotParsableDataBehaviour notParsableDataBehaviour;
-    private final ComponentLog logger;
 
     private final SimpleRecordSchema schema;
 
     public InfluxLineProtocolRecordReader(@Nullable final InputStream in,
-                                          @NonNull final Charset charset,
-                                          @NonNull final NotParsableDataBehaviour notParsableDataBehaviour,
-                                          @NonNull final ComponentLog logger) {
+                                          @NonNull final Charset charset) {
 
-        Objects.requireNonNull(logger, "ComponentLog is required");
         Objects.requireNonNull(charset, "Charset is required");
-        Objects.requireNonNull(notParsableDataBehaviour, "NotParsableDataBehaviour is required");
 
         this.reader = in != null ? new BufferedReader(new InputStreamReader(in, charset)) : null;
-        this.notParsableDataBehaviour = notParsableDataBehaviour;
-        this.logger = logger;
 
         List<RecordField> fields = new ArrayList<>();
 
@@ -101,21 +91,7 @@ public class InfluxLineProtocolRecordReader implements RecordReader {
 
         String protocol = reader.readLine();
 
-        try {
-
-            return mapInlineProtocol(protocol, coerceTypes, dropUnknownFields);
-
-        } catch (NotParsableInlineProtocolData e) {
-
-            if (NotParsableDataBehaviour.WARN.equals(notParsableDataBehaviour)) {
-
-                logger.warn("Not parsable Incoming Inline Protocol", e);
-
-                return nextRecord(coerceTypes, dropUnknownFields);
-            }
-
-            throw e;
-        }
+        return mapInlineProtocol(protocol, coerceTypes, dropUnknownFields);
     }
 
     @Override

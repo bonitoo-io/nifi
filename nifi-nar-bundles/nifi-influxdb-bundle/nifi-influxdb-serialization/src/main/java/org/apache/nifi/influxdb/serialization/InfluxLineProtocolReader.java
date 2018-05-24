@@ -19,12 +19,10 @@ package org.apache.nifi.influxdb.serialization;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.annotation.lifecycle.OnEnabled;
-import org.apache.nifi.components.AllowableValue;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.controller.AbstractControllerService;
 import org.apache.nifi.controller.ConfigurationContext;
 import org.apache.nifi.expression.ExpressionLanguageScope;
-import org.apache.nifi.influxdb.util.PropertyValueUtils;
 import org.apache.nifi.logging.ComponentLog;
 import org.apache.nifi.processor.util.StandardValidators;
 import org.apache.nifi.schema.access.SchemaNotFoundException;
@@ -40,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.nifi.influxdb.serialization.InfluxLineProtocolReader.NotParsableDataBehaviour.WARN;
 
 /**
  * @author bednar@github.com
@@ -62,34 +58,6 @@ public class InfluxLineProtocolReader extends AbstractControllerService implemen
             .required(true)
             .build();
 
-    public enum NotParsableDataBehaviour {
-        FAIL,
-        WARN
-    }
-
-    /**
-     * Not parsable data behaviour
-     */
-    private static final AllowableValue NOT_PARSABLE_DATA_BEHAVIOUR_WARN = new AllowableValue(
-            WARN.name(),
-            "Warn",
-            "Provide a warning and process a next Record.");
-
-    private static final AllowableValue NOT_PARSABLE_DATA_BEHAVIOUR_FAIL = new AllowableValue(
-            NotParsableDataBehaviour.FAIL.name(),
-            "Fail",
-            "Provide a exception and stop processing current Records.");
-
-    public static final PropertyDescriptor NOT_PARSABLE_DATA = new PropertyDescriptor.Builder()
-            .name("line-protocol-not-parsable")
-            .displayName("Not Parsable Data Behavior")
-            .description("Indicates how to handle the incoming not parsable data. Selecting 'WARN' will "
-                    + "log information about not parsable data and process next record.")
-            .required(true)
-            .allowableValues(NOT_PARSABLE_DATA_BEHAVIOUR_WARN, NOT_PARSABLE_DATA_BEHAVIOUR_FAIL)
-            .defaultValue(WARN.name())
-            .build();
-
     private static final List<PropertyDescriptor> PROPERTY_DESCRIPTORS;
 
     static {
@@ -97,13 +65,11 @@ public class InfluxLineProtocolReader extends AbstractControllerService implemen
         final List<PropertyDescriptor> propertyDescriptors = new ArrayList<>();
 
         propertyDescriptors.add(CHARSET);
-        propertyDescriptors.add(NOT_PARSABLE_DATA);
 
         PROPERTY_DESCRIPTORS = Collections.unmodifiableList(propertyDescriptors);
     }
 
     private volatile String charsetName;
-    private volatile NotParsableDataBehaviour notParsableDataBehaviour;
 
     @Override
     protected List<PropertyDescriptor> getSupportedPropertyDescriptors() {
@@ -115,7 +81,6 @@ public class InfluxLineProtocolReader extends AbstractControllerService implemen
     public void onEnabled(final ConfigurationContext context) {
 
         this.charsetName = context.getProperty(CHARSET).getValue();
-        this.notParsableDataBehaviour = PropertyValueUtils.getEnumValue(NOT_PARSABLE_DATA, context, NotParsableDataBehaviour.class, WARN);
     }
 
     @Override
@@ -127,6 +92,6 @@ public class InfluxLineProtocolReader extends AbstractControllerService implemen
 
         Charset charset = Charset.forName(charsetName);
 
-        return new InfluxLineProtocolRecordReader(in, charset, notParsableDataBehaviour, logger);
+        return new InfluxLineProtocolRecordReader(in, charset);
     }
 }

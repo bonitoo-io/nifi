@@ -16,7 +16,6 @@
  */
 package org.apache.nifi.influxdb.serialization;
 
-import org.apache.nifi.influxdb.serialization.InfluxLineProtocolReader.NotParsableDataBehaviour;
 import org.apache.nifi.logging.ComponentLog;
 import org.apache.nifi.reporting.InitializationException;
 import org.apache.nifi.util.TestRunner;
@@ -56,7 +55,6 @@ public abstract class AbstractTestInfluxLineProtocolReader {
         testRunner = TestRunners.newTestRunner(new TestInfluxLineProtocolRecordReader.ReaderProcessor());
         testRunner.addControllerService("record-reader", readerFactory);
         testRunner.setProperty(readerFactory, InfluxLineProtocolReader.CHARSET, StandardCharsets.UTF_8.name());
-        testRunner.setProperty(readerFactory, InfluxLineProtocolReader.NOT_PARSABLE_DATA, NotParsableDataBehaviour.FAIL.name());
         testRunner.enableControllerService(readerFactory);
     }
 }

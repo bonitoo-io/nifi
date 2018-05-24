@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import static org.apache.nifi.influxdb.serialization.InfluxLineProtocolReader.NotParsableDataBehaviour.FAIL;
 import static org.apache.nifi.schema.access.SchemaAccessUtils.SCHEMA_ACCESS_STRATEGY;
 import static org.apache.nifi.schema.access.SchemaAccessUtils.SCHEMA_TEXT;
 import static org.apache.nifi.schema.access.SchemaAccessUtils.SCHEMA_TEXT_PROPERTY;
@@ -296,7 +295,6 @@ public class ITPutInfluxDBRecord extends AbstractITInfluxDB {
 
         runner.addControllerService("inline-reader", readerFactory);
         runner.setProperty(readerFactory, InfluxLineProtocolReader.CHARSET, StandardCharsets.UTF_8.name());
-        runner.setProperty(readerFactory, InfluxLineProtocolReader.NOT_PARSABLE_DATA, FAIL.name());
         runner.enableControllerService(readerFactory);
 
         runner.setProperty(PutInfluxDBRecord.RECORD_READER_FACTORY, "inline-reader");

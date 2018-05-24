@@ -22,7 +22,6 @@ import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.util.Utf8;
 import org.apache.nifi.avro.AvroRecordSetWriter;
 import org.apache.nifi.flowfile.FlowFile;
-import org.apache.nifi.influxdb.serialization.InfluxLineProtocolReader.NotParsableDataBehaviour;
 import org.apache.nifi.processors.standard.ConvertRecord;
 import org.apache.nifi.reporting.InitializationException;
 import org.apache.nifi.schema.access.SchemaNotFoundException;
@@ -144,7 +143,6 @@ public class TestInfluxLineProtocolReader extends AbstractTestInfluxLineProtocol
 
         convertRunner.addControllerService("record-reader", readerFactory);
         convertRunner.setProperty(readerFactory, InfluxLineProtocolReader.CHARSET, StandardCharsets.UTF_8.name());
-        convertRunner.setProperty(readerFactory, InfluxLineProtocolReader.NOT_PARSABLE_DATA, NotParsableDataBehaviour.FAIL.name());
         convertRunner.enableControllerService(readerFactory);
 
         MockRecordWriter writerFactory = new MockRecordWriter();
@@ -164,7 +162,7 @@ public class TestInfluxLineProtocolReader extends AbstractTestInfluxLineProtocol
     }
 
     @Test
-    public void convertMultipleRecordOneNotParsableFail() throws InitializationException {
+    public void convertMultipleRecordOneFail() throws InitializationException {
 
         String data = "weather,location=us-midwest temperature=82 1465839830100400200" + System.lineSeparator()
                 + "weather,location=us-midwest 1465839830100400200";
@@ -176,7 +174,6 @@ public class TestInfluxLineProtocolReader extends AbstractTestInfluxLineProtocol
 
         convertRunner.addControllerService("record-reader", readerFactory);
         convertRunner.setProperty(readerFactory, InfluxLineProtocolReader.CHARSET, StandardCharsets.UTF_8.name());
-        convertRunner.setProperty(readerFactory, InfluxLineProtocolReader.NOT_PARSABLE_DATA, NotParsableDataBehaviour.FAIL.name());
         convertRunner.enableControllerService(readerFactory);
 
         MockRecordWriter writerFactory = new MockRecordWriter();
@@ -193,38 +190,5 @@ public class TestInfluxLineProtocolReader extends AbstractTestInfluxLineProtocol
 
         MockFlowFile success = convertRunner.getFlowFilesForRelationship("failure").get(0);
         Assert.assertNull(success.getAttribute("record.count"));
-    }
-
-    @Test
-    public void convertMultipleRecordOneNotParsableWarn() throws InitializationException {
-
-        String data = "weather,location=us-midwest temperature=82 1465839830100400200" + System.lineSeparator()
-                + "weather,location=us-midwest 1465839830100400200";
-
-        ConvertRecord processor = new ConvertRecord();
-        TestRunner convertRunner = TestRunners.newTestRunner(processor);
-
-        InfluxLineProtocolReader readerFactory = new InfluxLineProtocolReader();
-
-        convertRunner.addControllerService("record-reader", readerFactory);
-        convertRunner.setProperty(readerFactory, InfluxLineProtocolReader.CHARSET, StandardCharsets.UTF_8.name());
-        convertRunner.setProperty(readerFactory, InfluxLineProtocolReader.NOT_PARSABLE_DATA, NotParsableDataBehaviour.WARN.name());
-        convertRunner.enableControllerService(readerFactory);
-
-        MockRecordWriter writerFactory = new MockRecordWriter();
-        convertRunner.addControllerService("record-writer", writerFactory);
-        convertRunner.enableControllerService(writerFactory);
-
-        convertRunner.setProperty("record-reader", "record-reader");
-        convertRunner.setProperty("record-writer", "record-writer");
-
-        convertRunner.enqueue(data);
-        convertRunner.run();
-
-        convertRunner.assertTransferCount("success", 1);
-
-        MockFlowFile success = convertRunner.getFlowFilesForRelationship("success").get(0);
-        Assert.assertEquals(String.valueOf(1), success.getAttribute("record.count"));
-        Assert.assertFalse(convertRunner.getLogger().getWarnMessages().isEmpty());
     }
 }
