@@ -39,6 +39,7 @@ import org.apache.nifi.serialization.record.type.MapDataType;
 import org.apache.nifi.serialization.record.util.DataTypeUtils;
 import org.apache.nifi.util.StopWatch;
 import org.influxdb.InfluxDB;
+import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
 
 import java.io.IOException;
@@ -120,7 +121,23 @@ public final class RecordToPointMapper {
 
         stopWatch.start();
 
-        points.forEach(point -> influxDB.write(options.getDatabase(), options.getRetentionPolicy(), point));
+        if (influxDB.isBatchEnabled()) {
+
+            // Write by batching
+            points.forEach(point -> influxDB.write(options.getDatabase(), options.getRetentionPolicy(), point));
+
+        } else {
+
+            BatchPoints batch = BatchPoints
+                    .database(options.getDatabase())
+                    .retentionPolicy(options.getRetentionPolicy())
+                    .build();
+
+            points.forEach(batch::point);
+
+            // Write all Points together
+            influxDB.write(batch);
+        }
 
         stopWatch.stop();
 

@@ -88,7 +88,7 @@ public class TestPutInfluxDBRecordSettings extends AbstractTestPutInfluxDBRecord
         testRunner.enqueue("");
         testRunner.run();
 
-        Assert.assertEquals("nifi-database", databaseCapture.getValue());
+        Assert.assertEquals("nifi-database", pointCapture.getValue().getDatabase());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class TestPutInfluxDBRecordSettings extends AbstractTestPutInfluxDBRecord
         testRunner.enqueue("", attributes);
         testRunner.run();
 
-        Assert.assertEquals("dynamic-database-name", databaseCapture.getValue());
+        Assert.assertEquals("dynamic-database-name", pointCapture.getValue().getDatabase());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class TestPutInfluxDBRecordSettings extends AbstractTestPutInfluxDBRecord
         testRunner.enqueue("");
         testRunner.run();
 
-        Assert.assertEquals("custom-retention", retentionPolicyCapture.getValue());
+        Assert.assertEquals("custom-retention", pointCapture.getValue().getRetentionPolicy());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class TestPutInfluxDBRecordSettings extends AbstractTestPutInfluxDBRecord
         testRunner.enqueue("");
         testRunner.run();
 
-        Assert.assertEquals(WriteOptions.DEFAULT_RETENTION_POLICY, retentionPolicyCapture.getValue());
+        Assert.assertEquals(WriteOptions.DEFAULT_RETENTION_POLICY, pointCapture.getValue().getRetentionPolicy());
     }
 
     @Test

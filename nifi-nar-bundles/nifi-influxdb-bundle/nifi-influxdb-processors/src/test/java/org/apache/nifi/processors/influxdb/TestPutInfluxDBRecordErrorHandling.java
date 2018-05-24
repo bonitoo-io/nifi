@@ -252,7 +252,7 @@ public class TestPutInfluxDBRecordErrorHandling extends AbstractTestPutInfluxDBR
         List<MockFlowFile> successes = testRunner.getFlowFilesForRelationship(PutInfluxDBRecord.REL_SUCCESS);
         Assert.assertEquals(1, successes.size());
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
     }
 

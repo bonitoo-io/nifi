@@ -28,6 +28,7 @@ import org.apache.nifi.serialization.record.RecordField;
 import org.apache.nifi.serialization.record.RecordFieldType;
 import org.apache.nifi.util.LogMessage;
 import org.apache.nifi.util.MockFlowFile;
+import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         Mockito.verify(influxDB, Mockito.never()).write(Mockito.any(Point.class));
 
-        List<Point> allValues = pointCapture.getAllValues();
+        List<BatchPoints> allValues = pointCapture.getAllValues();
         Assert.assertTrue(allValues.isEmpty());
     }
 
@@ -70,7 +71,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
         testRunner.enqueue("");
         testRunner.run();
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals("nifi-measurement", getMeasurement(points.get(0)));
@@ -86,7 +87,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
         testRunner.enqueue("");
         testRunner.run();
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals("measurement-name", getMeasurement(points.get(0)));
@@ -199,7 +200,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(0, points.size());
     }
 
@@ -223,7 +224,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(2, points.size());
 
         Assert.assertEquals("nifi-record-1", getField("nifi-field", points.get(0)));
@@ -248,7 +249,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals(55.5F, getField("nifi-float", points.get(0)));
@@ -366,7 +367,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertNull(getTimestamp(points.get(0)));
@@ -387,7 +388,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals(Long.valueOf(789456123L), getTimestamp(points.get(0)));
@@ -408,7 +409,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertNull(getTimestamp(points.get(0)));
@@ -429,7 +430,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals(Long.valueOf(156), getTimestamp(points.get(0)));
@@ -452,7 +453,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals(Long.valueOf(dateValue.getTime()), getTimestamp(points.get(0)));
@@ -474,7 +475,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals(Long.valueOf(123456L), getTimestamp(points.get(0)));
@@ -498,7 +499,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Assert.assertEquals(Long.valueOf(dateValue.getTime()), getTimestamp(points.get(0)));
@@ -516,7 +517,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Map<String, String> tags = getTags(points.get(0));
@@ -567,7 +568,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Map<String, String> tags = getTags(points.get(0));
@@ -596,7 +597,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(PutInfluxDBRecord.REL_SUCCESS, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<Point> points = pointCapture.getValue().getPoints();
         Assert.assertEquals(1, points.size());
 
         Map<String, String> pointTags = getTags(points.get(0));
@@ -754,7 +755,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
         List<MockFlowFile> flowFiles = testRunner.getFlowFilesForRelationship(PutInfluxDBRecord.REL_SUCCESS);
         Assert.assertEquals(1, flowFiles.size());
 
-        Map<String, String> tags = getTags(pointCapture.getValue());
+        Map<String, String> tags = getTags(pointCapture.getValue().getPoints().get(0));
         Assert.assertNotNull(tags);
         Assert.assertEquals(0, tags.size());
     }
@@ -795,7 +796,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
         List<MockFlowFile> flowFiles = testRunner.getFlowFilesForRelationship(PutInfluxDBRecord.REL_SUCCESS);
         Assert.assertEquals(1, flowFiles.size());
 
-        Assert.assertNull(getField("nifi-not-exist-field", pointCapture.getValue()));
+        Assert.assertNull(getField("nifi-not-exist-field", pointCapture.getValue().getPoints().get(0)));
     }
 
     @Test
@@ -847,14 +848,16 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(expectedRelations, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<BatchPoints> batchPoints = pointCapture.getAllValues();
         if (PutInfluxDBRecord.REL_FAILURE.equals(expectedRelations)) {
 
-            Assert.assertEquals(0, points.size());
+            Assert.assertEquals(0, batchPoints.size());
 
             return;
         }
 
+        Assert.assertEquals(1, batchPoints.size());
+        List<Point> points = batchPoints.get(0).getPoints();
         Assert.assertEquals(1, points.size());
 
         Map<String, String> tags = getTags(points.get(0));
@@ -868,7 +871,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
         }
     }
 
-    private void addFieldRecordType(@NonNull final Boolean isValueExpected, @NonNull final Relationship relSuccess) {
+    private void addFieldRecordType(@NonNull final Boolean isValueExpected, @NonNull final Relationship relationship) {
 
         List<RecordField> fields = new ArrayList<>();
         fields.add(new RecordField("sub-record-field", RecordFieldType.BOOLEAN.getDataType()));
@@ -879,7 +882,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
         Map<String, Object> subRecordValues = new HashMap<>();
         subRecordValues.put("sub-record-field", true);
 
-        addFieldByType(subRecordValues, "{sub-record-field=true}", dataType, isValueExpected, relSuccess);
+        addFieldByType(subRecordValues, "{sub-record-field=true}", dataType, isValueExpected, relationship);
     }
 
     private void addFieldByType(@Nullable final Object fieldValue,
@@ -915,12 +918,17 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         testRunner.assertAllFlowFilesTransferred(expectedRelations, 1);
 
-        List<Point> points = pointCapture.getAllValues();
+        List<BatchPoints> batchPoints = pointCapture.getAllValues();
         if (isValueExpected) {
+            Assert.assertEquals(1, batchPoints.size());
+            List<Point> points = batchPoints.get(0).getPoints();
             Assert.assertEquals(1, points.size());
             Assert.assertEquals(expectedValue, getField("nifi-field", points.get(0)));
         } else {
-            Assert.assertEquals(0, points.size());
+
+            int expectedCount = expectedRelations.equals(PutInfluxDBRecord.REL_FAILURE) ? 0 : 1;
+
+            Assert.assertEquals(expectedCount, batchPoints.size());
         }
     }
 

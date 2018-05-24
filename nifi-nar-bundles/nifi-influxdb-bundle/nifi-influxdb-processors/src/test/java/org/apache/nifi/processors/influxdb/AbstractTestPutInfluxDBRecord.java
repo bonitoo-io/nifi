@@ -28,7 +28,9 @@ import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
 import org.hamcrest.Description;
 import org.hamcrest.core.IsInstanceOf;
+import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
+import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
 import org.junit.After;
 import org.junit.Before;
@@ -51,9 +53,7 @@ public abstract class AbstractTestPutInfluxDBRecord {
 
     protected InfluxDB influxDB = Mockito.mock(InfluxDB.class);
     protected Answer writeAnswer = invocation -> Void.class;
-    protected ArgumentCaptor<String> databaseCapture = ArgumentCaptor.forClass(String.class);
-    protected ArgumentCaptor<String> retentionPolicyCapture = ArgumentCaptor.forClass(String.class);
-    protected ArgumentCaptor<Point> pointCapture = ArgumentCaptor.forClass(Point.class);
+    protected ArgumentCaptor<BatchPoints> pointCapture = ArgumentCaptor.forClass(BatchPoints.class);
 
     protected TestRunner testRunner;
     protected MockRecordParser recordReader;
@@ -80,10 +80,7 @@ public abstract class AbstractTestPutInfluxDBRecord {
         InfluxDBService influxDBService = Mockito.spy(new StandardInfluxDBService());
         Mockito.doAnswer(invocation -> {
 
-            Mockito.doAnswer(writeAnswer).when(influxDB).write(
-                    databaseCapture.capture(),
-                    retentionPolicyCapture.capture(),
-                    pointCapture.capture());
+            Mockito.doAnswer(writeAnswer).when(influxDB).write(pointCapture.capture());
 
             return influxDB;
 
