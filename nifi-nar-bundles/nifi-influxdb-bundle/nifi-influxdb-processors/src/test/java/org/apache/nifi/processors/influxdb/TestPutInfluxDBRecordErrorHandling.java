@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.nifi.processors.influxdb.AbstractInfluxDBProcessor.INFLUX_DB_ERROR_MESSAGE;
+import static org.apache.nifi.processors.influxdb.AbstractInfluxDBProcessor.INFLUX_DB_ERROR_MESSAGE_LOG;
 import static org.apache.nifi.processors.influxdb.PutInfluxDBRecord.AT_LEAST_ONE_FIELD_DEFINED_MESSAGE;
 import static org.apache.nifi.processors.influxdb.PutInfluxDBRecord.DATABASE_NAME_EMPTY_MESSAGE;
 import static org.apache.nifi.processors.influxdb.PutInfluxDBRecord.MEASUREMENT_NAME_EMPTY_MESSAGE;
@@ -283,7 +284,7 @@ public class TestPutInfluxDBRecordErrorHandling extends AbstractTestPutInfluxDBR
         // First is formatted message, Second Stack Trace
         Assert.assertEquals(2, errors.size());
 
-        Assert.assertTrue(errors.get(0).getMsg().contains(INFLUX_DB_ERROR_MESSAGE));
+        Assert.assertTrue(errors.get(0).getMsg().contains(INFLUX_DB_ERROR_MESSAGE_LOG));
         Assert.assertTrue(errors.get(1).getThrowable() instanceof InfluxDBException.UnableToParseException);
     }
 
@@ -297,7 +298,7 @@ public class TestPutInfluxDBRecordErrorHandling extends AbstractTestPutInfluxDBR
         // First is formatted message, Second Stack Trace
         Assert.assertEquals(2, errors.size());
 
-        Assert.assertTrue(errors.get(0).getMsg().contains(INFLUX_DB_ERROR_MESSAGE));
+        Assert.assertTrue(errors.get(0).getMsg().contains(INFLUX_DB_ERROR_MESSAGE_LOG));
         Assert.assertTrue(errors.get(1).getThrowable() instanceof InfluxDBException.AuthorizationFailedException);
     }
 

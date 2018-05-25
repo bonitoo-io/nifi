@@ -693,7 +693,7 @@ public class PutInfluxDBRecord extends AbstractInfluxDBProcessor {
 
         String flowFileName = flowFile.getAttributes().get(CoreAttributes.FILENAME.key());
 
-        getLogger().error(INFLUX_DB_ERROR_MESSAGE, new Object[]{flowFileName, e.getLocalizedMessage()}, e);
+        getLogger().error(INFLUX_DB_ERROR_MESSAGE_LOG, new Object[]{flowFileName, e.getLocalizedMessage()}, e);
 
         return session.putAttribute(flowFile, AbstractInfluxDBProcessor.INFLUX_DB_ERROR_MESSAGE, String.valueOf(e.getMessage()));
     }
