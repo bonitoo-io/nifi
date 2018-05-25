@@ -175,6 +175,7 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
         Boolean fieldValue = Boolean.TRUE;
 
+        //noinspection ConstantConditions
         addFieldByType(fieldValue, RecordFieldType.BOOLEAN);
     }
 
@@ -824,13 +825,14 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
     private void addTagByType(@Nullable final Object tagValue,
                               @Nullable final Object expectedValue,
-                              @NonNull final DataType dataType) {
+                              @Nullable final DataType dataType) {
+
         addTagByType(tagValue, expectedValue, dataType, true, PutInfluxDBRecord.REL_SUCCESS);
     }
 
     private void addTagByType(@Nullable final Object tagValue,
                               @Nullable final Object expectedValue,
-                              @NonNull final DataType dataType,
+                              @Nullable final DataType dataType,
                               @NonNull final Boolean isValueExpected,
                               @NonNull final Relationship expectedRelations) {
 
@@ -897,13 +899,14 @@ public class TestPutInfluxDBRecord extends AbstractTestPutInfluxDBRecord {
 
     private void addFieldByType(@Nullable final Object fieldValue,
                                 @Nullable final Object expectedValue,
-                                @NonNull final DataType dataType) {
+                                @Nullable final DataType dataType) {
+
         addFieldByType(fieldValue, expectedValue, dataType, true, PutInfluxDBRecord.REL_SUCCESS);
     }
 
     private void addFieldByType(@Nullable final Object fieldValue,
                                 @Nullable final Object expectedValue,
-                                @NonNull final DataType dataType,
+                                @Nullable final DataType dataType,
                                 @NonNull final Boolean isValueExpected,
                                 @NonNull final Relationship expectedRelations) {
 

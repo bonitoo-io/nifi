@@ -383,6 +383,13 @@ public final class RecordToPointMapper {
                 rawType = DataTypeUtils.chooseDataType(rawValue, (ChoiceDataType) mapValueType);
             }
 
+            if (rawType == null)
+            {
+                String message = String.format("Map does not have a specified type of values. MapValueType: %s", mapValueType);
+
+                throw new IllegalStateException(message);
+            }
+
             Object mapValue = DataTypeUtils.convertType(rawValue, rawType, mapKey);
             saveKeyValue.save(mapKey, mapValue, rawType);
         }
@@ -542,6 +549,7 @@ public final class RecordToPointMapper {
 
                     Object choiceValue = DataTypeUtils.convertType(value, choiceDataType, field);
 
+                    //noinspection ConstantConditions
                     addField(field, choiceValue, choiceDataType);
                     break;
 
@@ -553,6 +561,8 @@ public final class RecordToPointMapper {
                     }
 
                     Map<String, Object> map = DataTypeUtils.toMap(value, field);
+
+                    //noinspection ConstantConditions
                     storeMap(map, mapValueType, this::addField);
 
                     break;
