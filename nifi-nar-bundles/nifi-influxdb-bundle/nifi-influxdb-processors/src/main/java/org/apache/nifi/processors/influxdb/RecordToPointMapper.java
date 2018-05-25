@@ -383,8 +383,7 @@ public final class RecordToPointMapper {
                 rawType = DataTypeUtils.chooseDataType(rawValue, (ChoiceDataType) mapValueType);
             }
 
-            if (rawType == null)
-            {
+            if (rawType == null) {
                 String message = String.format("Map does not have a specified type of values. MapValueType: %s", mapValueType);
 
                 throw new IllegalStateException(message);
